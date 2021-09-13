@@ -75,8 +75,25 @@
               <h3>Agregar nuevo animal</h3>
             </div>
         </div>
-    </div>
-
+    </div> <!--fin container-->
+<script>
+  $(document).ready(function(){
+    var tablaAnimal = $('#tabla-animal').DataTable({
+      processing:true,
+      serverSide:true,
+      ajax:{
+        url: "{{route('animal.index')}}",
+      },
+      columns:[
+        {data: 'id'},
+        {data: 'nombre'},
+        {data: 'especie'},
+        {data: 'genero'},
+        {data: 'action', orderable:false}
+      ]
+    });
+  });
+</script>
 
 </body>
 </html>
