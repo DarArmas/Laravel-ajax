@@ -18,8 +18,6 @@ class Animal extends Model
     ];
     public $timestamps = false; //deshabilitamos la creacion de este campo  
 
- 
-
 
 
 }

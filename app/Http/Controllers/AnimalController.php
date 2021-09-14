@@ -15,7 +15,7 @@ class AnimalController extends Controller
     public function index(Request $request){
         //recuperar los datos
 
-        //si se recuperó un ajax
+        //aqui recupera datos de la BBDD
         if($request->ajax()){
             $animales = DB::select('CALL spset_animal()');
             //crear datatable
@@ -30,6 +30,14 @@ class AnimalController extends Controller
         }
 
         return view('animal.index');
+    }
+
+    public function registrar(Request $request){
+        //llamar a mi stored procedure
+        $animal = DB::select('CALL spcre_animal(?,?,?)',
+            [$request->nombre, $request->especie, $request->genero]);
+
+        return back();
     }
 
    

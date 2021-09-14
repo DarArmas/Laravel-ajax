@@ -73,17 +73,48 @@
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <h3>Agregar nuevo animal</h3>
+              <form id="registro-animal">
+                @csrf
+                <div class="form-group">
+                  <label for="txtNombre">Nombre</label>
+                  <input type="text" class="form-control" id="txtNombre" name="txtNombre" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                  <label for="selEspecie">Especie</label>
+                  <select class="form-control" id="selEspecie" name="selEspecie">
+                    <option value="Gato">Gato</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Ave">Ave</option>
+                    <option value="Otros">Otros</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                <label for="exampleInputEmail1">Genero</label>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="rbGeneroMacho" name="rbGenero" value="Macho" class="custom-control-input">
+                    <label class="custom-control-label" for="rbGeneroMacho">Macho</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="rbGeneroHembra" name="rbGenero" value="Hembra" class="custom-control-input">
+                    <label class="custom-control-label" for="rbGeneroHembra">Hembra</label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar animal</button>
+            </form>
             </div>
         </div>
     </div> <!--fin container-->
 <script>
+  //mostrar los datos que recupero desde la peticion ajax que se hace en el backend
   $(document).ready(function(){
     var tablaAnimal = $('#tabla-animal').DataTable({
       processing:true,
       serverSide:true,
+      //haz la peticion
       ajax:{
         url: "{{route('animal.index')}}",
       },
+      //muestrame estas columnas
       columns:[
         {data: 'id'},
         {data: 'nombre'},
@@ -92,6 +123,39 @@
         {data: 'action', orderable:false}
       ]
     });
+  });
+</script>
+
+<script>
+  $('#registro-animal').submit(function(e){
+    console.log("Hola diste click")
+    e.preventDefault(); //para que no recargue la pagina cuando se hace submit
+    var nombre = $('#txtNombre').val();
+    var especie = $('#selEspecie').val();
+    var genero = $("input[name='rbGenero']:checked").val();
+    var _token = $("input[name=_token]").val();
+     
+     $.ajax({
+        url: "{{route('animal.registrar')}}",
+        type: "POST",
+        data:{
+            nombre: nombre,
+            especie: especie,
+            genero: genero,
+            _token:_token
+        },
+        success:function(response){
+          if(response){
+            $('#registro-animal')[0].reset(); //si se realiza el post correctamente,borrame la caja de registro
+            toastr.success('El registro se inrgreso correctamente.', 'Nuevo Registro', {timeOut: 3000});
+            $('#tabla-animal').DataTable().ajax.reload(); //cuando ingrese datos, que se actualice la tabla
+          }
+        }
+
+      });
+
+
+    
   });
 </script>
 

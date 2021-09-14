@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 
 Route::get('animal', [AnimalController::class, 'index'])->name('animal.index');
+Route::post('animal', [AnimalController::class, 'registrar'])->name('animal.registrar');
