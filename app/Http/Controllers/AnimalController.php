@@ -22,7 +22,7 @@ class AnimalController extends Controller
             return DataTables::of($animales)
                 ->addColumn('action', function($animales){
                     $acciones = '<a href="" class="btn btn-info btn-sm">Editar</a>';
-                    $acciones .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="" class="btn btn-danger btn-sm">Eliminar</button>';
+                    $acciones .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="'. $animales->id .'" class="delete btn btn-danger btn-sm">Eliminar</button>';
                     return $acciones; 
                 })
                 ->rawColumns(['action'])
@@ -40,5 +40,11 @@ class AnimalController extends Controller
         return back();
     }
 
+    public function eliminar($id){
+        //el id me llega desde la url en el .ajax
+        $animal = DB::select('CALL spdel_animal(?)', [$id]);
+        return back();
+
+    }
    
 }

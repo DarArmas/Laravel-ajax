@@ -103,6 +103,30 @@
             </form>
             </div>
         </div>
+
+
+<!-- Modal eliminar -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Desea eliminar el registro seleccionado?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-primary">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     </div> <!--fin container-->
 <script>
   //mostrar los datos que recupero desde la peticion ajax que se hace en el backend
@@ -157,6 +181,32 @@
 
     
   });
+</script>
+<script>
+  //eliminar registros
+  var ani_id;
+  $(document).on('click','.delete', function(){
+      ani_id = $(this).attr('id'); 
+      $('#confirmModal').modal('show');
+  }); 
+
+  //el boton con id=btnEliminar está en el modal
+$('#btnEliminar').click(function(){
+
+  $.ajax({
+    url: "animal/eliminar/"+ani_id,
+    beforeSend: function(){
+      $('#btnEliminar').text('Eliminando....');
+    },
+    success: function(data){
+      setTimeout(function(){
+        $('#confirmModal').modal('hide');
+        toastr.warning('El registro fue eliminado correctamente.', 'Eliminar registro', {timeOut:3000});
+        $('#tabla-animal').DataTable().ajax.reload();
+      },2000);
+    }
+  });
+});
 </script>
 
 </body>
