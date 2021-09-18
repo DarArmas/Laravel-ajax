@@ -105,6 +105,58 @@
         </div>
 
 
+<!-- MOdal para editar datos STATIC BACKDROP (QUE NO PUEDA CERRARLO SI DA CLICK FUERA) -->
+<!-- Modal EDITAR -->
+<div class="modal fade" id="animal_edit_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Editar Animal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      <form id="animal_edit_form">
+                @csrf
+                <div class="form-group">
+                  <label for="txtNombre">Nombre</label>
+                  <input type="text" class="form-control" id="txtNombre2" name="txtNombre2" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                  <label for="selEspecie">Especie</label>
+                  <select class="form-control" id="selEspecie2" name="selEspecie2">
+                    <option value="Gato">Gato</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Ave">Ave</option>
+                    <option value="Otros">Otros</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                <label for="exampleInputEmail1">Genero</label>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="rbGeneroMacho2" name="rbGenero" value="Macho" class="custom-control-input">
+                    <label class="custom-control-label" for="rbGeneroMacho">Macho</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" id="rbGeneroHembra2" name="rbGenero" value="Hembra" class="custom-control-input">
+                    <label class="custom-control-label" for="rbGeneroHembra">Hembra</label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar animal</button>
+            </form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal eliminar -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -204,9 +256,18 @@ $('#btnEliminar').click(function(){
         toastr.warning('El registro fue eliminado correctamente.', 'Eliminar registro', {timeOut:3000});
         $('#tabla-animal').DataTable().ajax.reload();
       },2000);
+      $('#btnEliminar').text('Eliminar');
     }
   });
 });
+</script>
+<script>
+  function editarAnimal(id){
+    $.get('animal/editar/' + id, function(animal){
+      //asignar los datos asignados a la ventana modal
+      $('#animal_edit_modal').modal('toggle');
+    });
+  }
 </script>
 
 </body>

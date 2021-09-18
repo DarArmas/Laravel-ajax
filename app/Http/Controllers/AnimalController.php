@@ -21,7 +21,7 @@ class AnimalController extends Controller
             //crear datatable
             return DataTables::of($animales)
                 ->addColumn('action', function($animales){
-                    $acciones = '<a href="" class="btn btn-info btn-sm">Editar</a>';
+                    $acciones = '<a href="javascript:void(0)" onclick="editarAnimal('. $animales->id .')" class="btn btn-info btn-sm">Editar</a>';
                     $acciones .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="'. $animales->id .'" class="delete btn btn-danger btn-sm">Eliminar</button>';
                     return $acciones; 
                 })
@@ -45,6 +45,12 @@ class AnimalController extends Controller
         $animal = DB::select('CALL spdel_animal(?)', [$id]);
         return back();
 
+    }
+
+    public function editar($id){
+        //solo seleccionar el animal para despues actualizarlo
+        $animal = DB::select('CALL spseledit_animal(?)', [$id]);
+        return response()->json($animal);
     }
    
 }
